@@ -47,7 +47,7 @@ public class UserRestController {
 	}
 	
 	@PostMapping(value = "/save")
-	public ResponseEntity<?> save(@RequestBody UserDTO userDTO) {
+	public ResponseEntity<String> save(@RequestBody UserDTO userDTO) {
 		if(userDTO.getLogin() == null || userDTO.getPassword() == null) {
 			return new ResponseEntity<String>("'login' and 'password' are required", HttpStatus.FORBIDDEN);
 		}
@@ -60,7 +60,8 @@ public class UserRestController {
 	}
 	
 	@PatchMapping(value = "/update/{id}")
-	public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody UserDTO userDTO) {
+	public ResponseEntity<String> update(@PathVariable("id") String id, @RequestBody UserDTO userDTO) {
+		userDTO.setPassword(Integer.toString(userDTO.getPassword().hashCode()));
 		if(userService.findById(id) == null) {
 			return new ResponseEntity<String>("User could not be found", HttpStatus.NOT_FOUND);
 		}
@@ -76,7 +77,7 @@ public class UserRestController {
 	}
 	
 	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity<?> deleteById(@PathVariable("id") String id) {
+	public ResponseEntity<String> deleteById(@PathVariable("id") String id) {
 		if(userService.findById(id) == null) {
 			return new ResponseEntity<String>("User could not be found", HttpStatus.NOT_FOUND);
 		}
