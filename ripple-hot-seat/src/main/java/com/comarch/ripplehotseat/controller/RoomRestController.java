@@ -47,14 +47,14 @@ public class RoomRestController {
 	}
 	
 	@PostMapping(value = "/save")
-	public ResponseEntity<?> save(@RequestBody RoomDTO roomDTO) {
+	public ResponseEntity<String> save(@RequestBody RoomDTO roomDTO) {
 		roomDTO.setId(null);
 		roomService.save(ObjectMapperUtils.map(roomDTO, Room.class));
 		return new ResponseEntity<String>("Room added successfully", HttpStatus.OK);
 	}
 	
 	@PatchMapping(value = "/update/{id}")
-	public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody RoomDTO roomDTO) {
+	public ResponseEntity<String> update(@PathVariable("id") String id, @RequestBody RoomDTO roomDTO) {
 		if(roomService.findById(id) == null) {
 			return new ResponseEntity<String>("Room could not be found", HttpStatus.NOT_FOUND);
 		}
@@ -64,7 +64,7 @@ public class RoomRestController {
 	}
 	
 	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity<?> deleteById(@PathVariable("id") String id) {
+	public ResponseEntity<String> deleteById(@PathVariable("id") String id) {
 		if(roomService.findById(id) == null) {
 			return new ResponseEntity<String>("Room could not be found", HttpStatus.NOT_FOUND);
 		}
