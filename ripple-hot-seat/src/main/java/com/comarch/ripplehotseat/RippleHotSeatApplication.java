@@ -15,6 +15,11 @@ import com.comarch.ripplehotseat.service.ReservationService;
 import com.comarch.ripplehotseat.service.RoomService;
 import com.comarch.ripplehotseat.service.UserService;
 
+/**
+ * 
+ * @author Krzysztof Sajkowski
+ *
+ */
 @SpringBootApplication
 public class RippleHotSeatApplication implements CommandLineRunner {
 
