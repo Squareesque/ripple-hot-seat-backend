@@ -70,8 +70,13 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 	}
 	
 	public void initializeDatabase() {
+		/*
+		 * login: login
+		 * password: password
+		 * role: role
+		 */
+		userService.save(new User("login", "$2a$10$XYelR9Jo1kGbIPWgdPnNE.EcUo7tiXZauAVu9C7Y2E2D6aMK1I7QW", "role"));
 		roomService.save(new Room(1));
-		userService.save(new User("login", "password", "role"));
 	}
 
 }
