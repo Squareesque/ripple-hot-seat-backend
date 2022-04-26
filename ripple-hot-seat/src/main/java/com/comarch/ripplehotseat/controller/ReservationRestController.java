@@ -74,7 +74,7 @@ public class ReservationRestController {
 	}
 	
 	@PostMapping(value = "/save")
-	public ResponseEntity<?> save(@RequestBody ReservationDTO reservationDTO) {
+	public ResponseEntity<String> save(@RequestBody ReservationDTO reservationDTO) {
 		if(reservationDTO.getStartTime() == null || reservationDTO.getEndTime() == null || reservationDTO.getStartTime() == null || reservationDTO.getEndTime() == null) {
 			return new ResponseEntity<String>("'startTime', 'endTime', 'deskId' and 'userId' are required", HttpStatus.FORBIDDEN);
 		}
@@ -93,7 +93,7 @@ public class ReservationRestController {
 	}
 	
 	@PatchMapping(value = "/update/{id}")
-	public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody ReservationDTO reservationDTO) {
+	public ResponseEntity<String> update(@PathVariable("id") String id, @RequestBody ReservationDTO reservationDTO) {
 		if(reservationService.findById(id) == null) {
 			return new ResponseEntity<String>("Reservation could not be found", HttpStatus.NOT_FOUND);
 		}
@@ -115,7 +115,7 @@ public class ReservationRestController {
 	}
 	
 	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity<?> deleteById(@PathVariable("id") String id) {
+	public ResponseEntity<String> deleteById(@PathVariable("id") String id) {
 		if(reservationService.findById(id) == null) {
 			return new ResponseEntity<String>("Reservation could not be found", HttpStatus.NOT_FOUND);
 		}
