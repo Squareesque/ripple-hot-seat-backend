@@ -50,7 +50,7 @@ public class DeskRestController {
 	}
 	
 	@PostMapping(value = "/save")
-	public ResponseEntity<?> save(@RequestBody DeskDTO deskDTO) {
+	public ResponseEntity<String> save(@RequestBody DeskDTO deskDTO) {
 		if(deskDTO.getRoomId() == null) {
 			return new ResponseEntity<String>("'roomId' is required", HttpStatus.FORBIDDEN);
 		}
@@ -63,7 +63,7 @@ public class DeskRestController {
 	}
 	
 	@PatchMapping(value = "/update/{id}")
-	public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody DeskDTO deskDTO) {
+	public ResponseEntity<String> update(@PathVariable("id") String id, @RequestBody DeskDTO deskDTO) {
 		if(deskService.findById(id) == null) {
 			return new ResponseEntity<String>("Desk could not be found", HttpStatus.NOT_FOUND);
 		}
@@ -79,7 +79,7 @@ public class DeskRestController {
 	}
 	
 	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity<?> deleteById(@PathVariable("id") String id) {
+	public ResponseEntity<String> deleteById(@PathVariable("id") String id) {
 		if(deskService.findById(id) == null) {
 			return new ResponseEntity<String>("Desk could not be found", HttpStatus.NOT_FOUND);
 		}
