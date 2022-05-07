@@ -1,5 +1,7 @@
 package com.comarch.ripplehotseat.dto;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class UserDTO {
 
 	private String id;
@@ -29,6 +31,14 @@ public class UserDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	//test
+	public void encryptPassword()
+	{
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(this.password);
+		this.password = encodedPassword;
 	}
 
 	public String getRole() {

@@ -31,11 +31,13 @@ public class UserRestController {
 	@Autowired
 	public UserService userService;
 	
+	//do testow, taki endpoint nie powinein istniec
 	@GetMapping(value="")
 	public List<UserDTO> findAll() {
 		return ObjectMapperUtils.mapAll(userService.findAll(), UserDTO.class);
 	}
 	
+	//w porzadku, jezeli id nie jest
 	@GetMapping(value = "/byId/{id}")
 	public UserDTO findById(@PathVariable("id") String id) {
 		return ObjectMapperUtils.map(userService.findById(id), UserDTO.class);
@@ -55,6 +57,7 @@ public class UserRestController {
 			return new ResponseEntity<String>("'login' must be unique", HttpStatus.FORBIDDEN);
 		}
 		userDTO.setId(null);
+		userDTO.encryptPassword();
 		userService.save(ObjectMapperUtils.map(userDTO, User.class));
 		return new ResponseEntity<String>("User added successfully", HttpStatus.OK);
 	}
