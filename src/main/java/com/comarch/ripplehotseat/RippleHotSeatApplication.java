@@ -49,9 +49,7 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 		}
 		String command;
 		do {
-			System.out.println("1");
 			command = reader.readLine();
-			System.out.println("2");
 			if(command.equals("help")) {
 				System.out.println("Avaliable commands:");
 				System.out.println(" exit  - exit the application");
