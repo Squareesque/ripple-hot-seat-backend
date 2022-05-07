@@ -41,12 +41,17 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		if(deskService.count() == 0 && reservationService.count() == 0 && roomService.count() == 0 && userService.count() == 0) {
+			initializeDatabase();
+			/*
 			System.out.println("Database is empty");
 			System.out.println("Initialize the database? [yes]");
 			if(reader.readLine().equals("yes")) {
 				initializeDatabase();
 			}
+			 */
 		}
+		return;
+		/*
 		String command;
 		do {
 			command = reader.readLine();
@@ -67,6 +72,7 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 		while(!command.equals("exit"));
 		
 		System.exit(0);
+		*/
 	}
 	
 	public void dropDatabase() {
