@@ -1,7 +1,6 @@
 package com.comarch.ripplehotseat.jwtutils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +18,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Autowired
 	UserService userService;
 	
-	@SuppressWarnings("unchecked")
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		com.comarch.ripplehotseat.model.User user = userService.findByLogin(username);
 		if (user != null) { 

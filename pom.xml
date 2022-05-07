@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+	
 	<dependencies>
 	    
 		<dependency>
@@ -49,6 +50,12 @@
 		</dependency>
 
 		<dependency>
+		    <groupId>org.apache.tomcat.embed</groupId>
+		    <artifactId>tomcat-embed-core</artifactId>
+		   </dependency>
+		
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -66,6 +73,14 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+            	<groupId>org.codehaus.mojo</groupId>
+            	<artifactId>exec-maven-plugin</artifactId>
+            	<version>3.0.0</version>
+            	<configuration>
+            	    <mainClass>com.comarch.ripplehotseat.RippleHotSeatApplication</mainClass>
+            	</configuration>
+        	</plugin>
 		</plugins>
 	</build>
 

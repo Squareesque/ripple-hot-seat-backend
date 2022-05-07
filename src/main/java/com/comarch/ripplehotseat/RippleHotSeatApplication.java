@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Component;
 
 import com.comarch.ripplehotseat.model.Room;
 import com.comarch.ripplehotseat.model.User;
@@ -20,6 +21,7 @@ import com.comarch.ripplehotseat.service.UserService;
  * @author Krzysztof Sajkowski
  *
  */
+@Component
 @SpringBootApplication
 public class RippleHotSeatApplication implements CommandLineRunner {
 
@@ -47,7 +49,9 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 		}
 		String command;
 		do {
+			System.out.println("1");
 			command = reader.readLine();
+			System.out.println("2");
 			if(command.equals("help")) {
 				System.out.println("Avaliable commands:");
 				System.out.println(" exit  - exit the application");
