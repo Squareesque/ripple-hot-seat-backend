@@ -1,7 +1,7 @@
 package com.comarch.ripplehotseat;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+//import java.io.BufferedReader;
+//import java.io.InputStreamReader;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -39,7 +39,7 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 	}
 
 	public void run(String... args) throws Exception {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		//BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		if(deskService.count() == 0 && reservationService.count() == 0 && roomService.count() == 0 && userService.count() == 0) {
 			initializeDatabase();
 			/*

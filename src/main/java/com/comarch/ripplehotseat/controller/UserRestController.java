@@ -55,6 +55,7 @@ public class UserRestController {
 			return new ResponseEntity<String>("'login' must be unique", HttpStatus.FORBIDDEN);
 		}
 		userDTO.setId(null);
+		userDTO.encryptPassword();
 		userService.save(ObjectMapperUtils.map(userDTO, User.class));
 		return new ResponseEntity<String>("User added successfully", HttpStatus.OK);
 	}
@@ -72,6 +73,7 @@ public class UserRestController {
 			return new ResponseEntity<String>("'login' must be unique", HttpStatus.FORBIDDEN);
 		}
 		userDTO.setId(id);
+		userDTO.encryptPassword();
 		userService.save(ObjectMapperUtils.map(userDTO, User.class));
 		return new ResponseEntity<String>("User updated successfully", HttpStatus.OK);
 	}
