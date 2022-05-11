@@ -12,16 +12,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.comarch.ripplehotseat.jwtutils.JwtAuthenticationEntryPoint;
 import com.comarch.ripplehotseat.jwtutils.JwtFilter;
 
 @Configuration
-@EnableWebMvc
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private JwtAuthenticationEntryPoint authenticationEntryPoint;
@@ -57,10 +53,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	    http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 	}
-	
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
-    }
 	
 }
