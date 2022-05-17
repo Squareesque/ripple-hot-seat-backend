@@ -11,7 +11,7 @@ public class RoomDTO {
 	private int number;
 	private int level;
 	private String office;
-	private String picturePath;
+	private byte[] picture;
 
 	public String getId() {
 		return id;
@@ -45,12 +45,12 @@ public class RoomDTO {
 		this.office = office;
 	}
 
-	public String getPicturePath() {
-		return picturePath;
+	public byte[] getPicture() {
+		return picture;
 	}
 
-	public void setPicturePath(String picturePath) {
-		this.picturePath = picturePath;
+	public void setPicture(byte[] picture) {
+		this.picture = picture;
 	}
 	
 }
