@@ -48,11 +48,14 @@ public class UserRestController {
 	
 	@PostMapping(value = "/save")
 	public ResponseEntity<String> save(@RequestBody UserDTO userDTO) {
-		if(userDTO.getLogin() == null || userDTO.getPassword() == null) {
+		if(userDTO.getLogin() == null || userDTO.getLogin().equals("") || userDTO.getPassword() == null || userDTO.getPassword().equals("")) {
 			return new ResponseEntity<String>("'login' and 'password' are required", HttpStatus.FORBIDDEN);
 		}
 		if(!userDTO.getLogin().endsWith("@comarch.com")) {
 			return new ResponseEntity<String>("'login' must be a comarch email address (@comarch.com)", HttpStatus.FORBIDDEN);
+		}
+		if(userDTO.getPassword().length() <= 3) {
+			return new ResponseEntity<String>("'password' should be longer than 3 characters", HttpStatus.FORBIDDEN);
 		}
 		if(userService.findByLogin(userDTO.getLogin()) != null) {
 			return new ResponseEntity<String>("'login' must be unique", HttpStatus.FORBIDDEN);
@@ -69,11 +72,14 @@ public class UserRestController {
 		if(userService.findById(id) == null) {
 			return new ResponseEntity<String>("User could not be found", HttpStatus.NOT_FOUND);
 		}
-		if(userDTO.getLogin() == null || userDTO.getPassword() == null) {
+		if(userDTO.getLogin() == null || userDTO.getLogin().equals("") || userDTO.getPassword() == null || userDTO.getPassword().equals("")) {
 			return new ResponseEntity<String>("'login' and 'password' are required", HttpStatus.FORBIDDEN);
 		}
 		if(!userDTO.getLogin().endsWith("@comarch.com")) {
 			return new ResponseEntity<String>("'login' must be a comarch email address (@comarch.com)", HttpStatus.FORBIDDEN);
+		}
+		if(userDTO.getPassword().length() <= 3) {
+			return new ResponseEntity<String>("'password' should be longer than 3 characters", HttpStatus.FORBIDDEN);
 		}
 		if(userService.findByLogin(userDTO.getLogin()) != null) {
 			return new ResponseEntity<String>("'login' must be unique", HttpStatus.FORBIDDEN);
