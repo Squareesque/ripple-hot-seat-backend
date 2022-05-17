@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comarch.ripplehotseat.dto.RoomDTO;
@@ -46,11 +48,24 @@ public class RoomRestController {
 		return ObjectMapperUtils.map(roomService.findById(id), RoomDTO.class);
 	}
 	
+	@GetMapping(value = "/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE) 
+	public @ResponseBody byte[] getImage(@PathVariable("id") String id) {
+		return ObjectMapperUtils.map(roomService.findById(id), RoomDTO.class).getPicture();
+	}
+	
 	@PostMapping(value = "/save")
 	public ResponseEntity<String> save(@RequestBody RoomDTO roomDTO) {
 		roomDTO.setId(null);
 		roomService.save(ObjectMapperUtils.map(roomDTO, Room.class));
 		return new ResponseEntity<String>("Room added successfully", HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/image/{id}")
+	public ResponseEntity<String> setImage(@PathVariable("id") String id, @RequestBody byte[] image) {
+		Room room = roomService.findById(id);
+		room.setPicture(image);
+		roomService.save(room);
+		return new ResponseEntity<String>("Image set successfully", HttpStatus.OK);
 	}
 	
 	@PatchMapping(value = "/update/{id}")

@@ -16,16 +16,16 @@ public class Room {
 	private int number;
 	private int level;
 	private String office;
-	private String picturePath;
+	private byte[] picture;
 	
 	public Room() {
 	}
 	
-	public Room(int number, int level, String office, String picturePath) {
+	public Room(int number, int level, String office, byte[] picture) {
 		this.number = number;
 		this.level = level;
 		this.office = office;
-		this.picturePath = picturePath;
+		this.picture = picture;
 	}
 
 	public String getId() {
@@ -60,17 +60,17 @@ public class Room {
 		this.office = office;
 	}
 
-	public String getPicturePath() {
-		return picturePath;
+	public byte[] getPicture() {
+		return picture;
 	}
 
-	public void setPicturePath(String picturePath) {
-		this.picturePath = picturePath;
+	public void setPicture(byte[] picture) {
+		this.picture = picture;
 	}
 
 	@Override
 	public String toString() {
-		return "Room [id=" + id + ", number=" + number + ", level=" + level + ", office=" + office + ", picturePath=" + picturePath + "]";
+		return "Room [id=" + id + ", number=" + number + ", level=" + level + ", office=" + office + ", picture=" + picture + "]";
 	}
 	
 }
