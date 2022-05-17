@@ -51,6 +51,9 @@ public class UserRestController {
 		if(userDTO.getLogin() == null || userDTO.getPassword() == null) {
 			return new ResponseEntity<String>("'login' and 'password' are required", HttpStatus.FORBIDDEN);
 		}
+		if(!userDTO.getLogin().endsWith("@comarch.com")) {
+			return new ResponseEntity<String>("'login' must be a comarch email address (@comarch.com)", HttpStatus.FORBIDDEN);
+		}
 		if(userService.findByLogin(userDTO.getLogin()) != null) {
 			return new ResponseEntity<String>("'login' must be unique", HttpStatus.FORBIDDEN);
 		}
@@ -68,6 +71,9 @@ public class UserRestController {
 		}
 		if(userDTO.getLogin() == null || userDTO.getPassword() == null) {
 			return new ResponseEntity<String>("'login' and 'password' are required", HttpStatus.FORBIDDEN);
+		}
+		if(!userDTO.getLogin().endsWith("@comarch.com")) {
+			return new ResponseEntity<String>("'login' must be a comarch email address (@comarch.com)", HttpStatus.FORBIDDEN);
 		}
 		if(userService.findByLogin(userDTO.getLogin()) != null) {
 			return new ResponseEntity<String>("'login' must be unique", HttpStatus.FORBIDDEN);
