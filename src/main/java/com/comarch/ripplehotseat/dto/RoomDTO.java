@@ -10,13 +10,9 @@ public class RoomDTO {
 	private String id;
 	private int number;
 	private int level;
-<<<<<<< HEAD
 	private String officeId;
 	private int positionX;
 	private int positionY;
-=======
-	private String office;
->>>>>>> 32e96365e540e802fa5c90eea0df4531bfba69be
 	private byte[] picture;
 
 	public String getId() {
@@ -51,7 +47,6 @@ public class RoomDTO {
 		this.officeId = officeId;
 	}
 
-<<<<<<< HEAD
 	public int getPositionX() {
 		return positionX;
 	}
@@ -72,12 +67,6 @@ public class RoomDTO {
 		return picture;
 	}
 
-=======
-	public byte[] getPicture() {
-		return picture;
-	}
-
->>>>>>> 32e96365e540e802fa5c90eea0df4531bfba69be
 	public void setPicture(byte[] picture) {
 		this.picture = picture;
 	}

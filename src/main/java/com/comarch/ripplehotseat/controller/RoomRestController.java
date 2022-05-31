@@ -54,14 +54,11 @@ public class RoomRestController {
 		return ObjectMapperUtils.map(roomService.findById(id), RoomDTO.class);
 	}
 	
-<<<<<<< HEAD
 	@GetMapping(value = "/byOfficeId/{officeId}")
 	public List<RoomDTO> findManyByOfficeId(@PathVariable("officeId") String officeId) {
 		return ObjectMapperUtils.mapAll(roomService.findManyByOfficeId(officeId), RoomDTO.class);
 	}
 	
-=======
->>>>>>> 32e96365e540e802fa5c90eea0df4531bfba69be
 	@GetMapping(value = "/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE) 
 	public @ResponseBody byte[] getImage(@PathVariable("id") String id) {
 		return ObjectMapperUtils.map(roomService.findById(id), RoomDTO.class).getPicture();
