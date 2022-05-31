@@ -77,7 +77,7 @@ public class ReservationRestController {
 	
 	@PostMapping(value = "/save")
 	public ResponseEntity<String> save(@RequestBody ReservationDTO reservationDTO) {
-		if(reservationDTO.getStartTime() == null || reservationDTO.getEndTime() == null || reservationDTO.getStartTime() == null || reservationDTO.getEndTime() == null) {
+		if(reservationDTO.getStartTime() == null || reservationDTO.getEndTime() == null || reservationDTO.getDeskId() == null || reservationDTO.getUserId() == null) {
 			return new ResponseEntity<String>("'startTime', 'endTime', 'deskId' and 'userId' are required", HttpStatus.FORBIDDEN);
 		}
 		if(!reservationDTO.getStartTime().before(reservationDTO.getEndTime())) {
@@ -90,7 +90,9 @@ public class ReservationRestController {
 			return new ResponseEntity<String>("'userId' must be of an existing user", HttpStatus.FORBIDDEN);
 		}
 		reservationDTO.setId(null);
-		reservationService.save(ObjectMapperUtils.map(reservationDTO, Reservation.class));
+		Reservation r = ObjectMapperUtils.map(reservationDTO, Reservation.class);
+		System.out.println(r);
+		reservationService.save(r);
 		return new ResponseEntity<String>("Reservation added successfully", HttpStatus.OK);
 	}
 	

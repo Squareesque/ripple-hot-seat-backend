@@ -15,4 +15,6 @@ public interface RoomRepository extends MongoRepository<Room, String> {
 	
 	List<Room> findAllByOrderByNumber();
 	
+	List<Room> findManyByOfficeId(String officeId);
+	
 }

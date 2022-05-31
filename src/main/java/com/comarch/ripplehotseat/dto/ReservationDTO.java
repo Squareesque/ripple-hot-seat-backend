@@ -51,7 +51,7 @@ public class ReservationDTO {
 		this.userId = userId;
 	}
 	
-	public boolean getIsPermantent() {
+	public boolean getIsPermanent() {
 		return isPermanent;
 	}
 	

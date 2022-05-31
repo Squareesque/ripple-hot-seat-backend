@@ -10,7 +10,9 @@ public class RoomDTO {
 	private String id;
 	private int number;
 	private int level;
-	private String office;
+	private String officeId;
+	private int positionX;
+	private int positionY;
 	private byte[] picture;
 
 	public String getId() {
@@ -36,13 +38,29 @@ public class RoomDTO {
 	public void setLevel(int level) {
 		this.level = level;
 	}
-	
-	public String getOffice() {
-		return office;
+
+	public String getOfficeId() {
+		return officeId;
 	}
 
-	public void setOffice(String office) {
-		this.office = office;
+	public void setOfficeId(String officeId) {
+		this.officeId = officeId;
+	}
+
+	public int getPositionX() {
+		return positionX;
+	}
+
+	public void setPositionX(int positionX) {
+		this.positionX = positionX;
+	}
+
+	public int getPositionY() {
+		return positionY;
+	}
+
+	public void setPositionY(int positionY) {
+		this.positionY = positionY;
 	}
 
 	public byte[] getPicture() {

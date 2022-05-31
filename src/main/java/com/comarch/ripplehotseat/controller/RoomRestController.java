@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comarch.ripplehotseat.dto.RoomDTO;
 import com.comarch.ripplehotseat.model.Room;
+import com.comarch.ripplehotseat.service.OfficeService;
 import com.comarch.ripplehotseat.service.RoomService;
 import com.comarch.ripplehotseat.util.ObjectMapperUtils;
 
@@ -35,6 +36,9 @@ public class RoomRestController {
 	@Autowired
 	public RoomService roomService;
 	
+	@Autowired
+	public OfficeService officeService;
+	
 	@GetMapping(value="")
 	public List<RoomDTO> findAll() {
 		return ObjectMapperUtils.mapAll(roomService.findAll(), RoomDTO.class);
@@ -50,6 +54,11 @@ public class RoomRestController {
 		return ObjectMapperUtils.map(roomService.findById(id), RoomDTO.class);
 	}
 	
+	@GetMapping(value = "/byOfficeId/{officeId}")
+	public List<RoomDTO> findManyByOfficeId(@PathVariable("officeId") String officeId) {
+		return ObjectMapperUtils.mapAll(roomService.findManyByOfficeId(officeId), RoomDTO.class);
+	}
+	
 	@GetMapping(value = "/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE) 
 	public @ResponseBody byte[] getImage(@PathVariable("id") String id) {
 		return ObjectMapperUtils.map(roomService.findById(id), RoomDTO.class).getPicture();
@@ -57,6 +66,12 @@ public class RoomRestController {
 	
 	@PostMapping(value = "/save")
 	public ResponseEntity<String> save(@RequestBody RoomDTO roomDTO) {
+		if(roomDTO.getOfficeId() == null) {
+			return new ResponseEntity<String>("'officeId' is required", HttpStatus.FORBIDDEN);
+		}
+		if(officeService.findById(roomDTO.getOfficeId()) == null) {
+			return new ResponseEntity<String>("'officeId' must be of an existing office", HttpStatus.FORBIDDEN);
+		}
 		roomDTO.setId(null);
 		roomService.save(ObjectMapperUtils.map(roomDTO, Room.class));
 		return new ResponseEntity<String>("Room added successfully", HttpStatus.OK);
@@ -74,6 +89,12 @@ public class RoomRestController {
 	public ResponseEntity<String> update(@PathVariable("id") String id, @RequestBody RoomDTO roomDTO) {
 		if(roomService.findById(id) == null) {
 			return new ResponseEntity<String>("Room could not be found", HttpStatus.NOT_FOUND);
+		}
+		if(roomDTO.getOfficeId() == null) {
+			return new ResponseEntity<String>("'officeId' is required", HttpStatus.FORBIDDEN);
+		}
+		if(officeService.findById(roomDTO.getOfficeId()) == null) {
+			return new ResponseEntity<String>("'officeId' must be of an existing office", HttpStatus.FORBIDDEN);
 		}
 		roomDTO.setId(id);
 		roomService.save(ObjectMapperUtils.map(roomDTO, Room.class));

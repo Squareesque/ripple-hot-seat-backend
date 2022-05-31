@@ -39,10 +39,10 @@ public class Desk {
 	private String beaconId;
 	private boolean isFree;
 	
-	Desk(){
+	public Desk(){
 	}
 	
-	Desk(String roomId, int positionX, int positionY, Orientation orientation, int number, String beaconId, boolean isFree){
+	public Desk(String roomId, int positionX, int positionY, Orientation orientation, int number, String beaconId, boolean isFree){
 		this.roomId = roomId;
 		this.positionX = positionX;
 		this.positionY = positionY;

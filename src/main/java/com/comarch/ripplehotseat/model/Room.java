@@ -15,16 +15,20 @@ public class Room {
 	private String id;
 	private int number;
 	private int level;
-	private String office;
+	private String officeId;
+	private int positionX;
+	private int positionY;
 	private byte[] picture;
 	
 	public Room() {
 	}
 	
-	public Room(int number, int level, String office, byte[] picture) {
+	public Room(int number, int level, String officeId, int positionX, int positionY, byte[] picture) {
 		this.number = number;
 		this.level = level;
-		this.office = office;
+		this.officeId = officeId;
+		this.positionX = positionX;
+		this.positionY = positionY;
 		this.picture = picture;
 	}
 
@@ -52,12 +56,28 @@ public class Room {
 		this.level = level;
 	}
 	
-	public String getOffice() {
-		return office;
+	public String getOfficeId() {
+		return officeId;
 	}
 
-	public void setOffice(String office) {
-		this.office = office;
+	public void setOfficeId(String officeId) {
+		this.officeId = officeId;
+	}
+
+	public int getPositionX() {
+		return positionX;
+	}
+
+	public void setPositionX(int positionX) {
+		this.positionX = positionX;
+	}
+
+	public int getPositionY() {
+		return positionY;
+	}
+
+	public void setPositionY(int positionY) {
+		this.positionY = positionY;
 	}
 
 	public byte[] getPicture() {
@@ -70,7 +90,7 @@ public class Room {
 
 	@Override
 	public String toString() {
-		return "Room [id=" + id + ", number=" + number + ", level=" + level + ", office=" + office + ", picture=" + picture + "]";
+		return "Room [id=" + id + ", number=" + number + ", level=" + level + ", officeId=" + officeId + ", positionX=" + positionX + ", positionY=" + positionY + ", picture=" + picture + "]";
 	}
 	
 }

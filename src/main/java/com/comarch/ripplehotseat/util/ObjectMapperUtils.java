@@ -29,8 +29,10 @@ public class ObjectMapperUtils {
 		try {
 			return objectMapper.readValue(objectMapper.writeValueAsString(object), class1);
 		} catch (JsonMappingException e) {
+			System.out.println(e);
 			return null;
 		} catch (JsonProcessingException e) {
+			System.out.println(e);
 			return null;
 		}
 	}

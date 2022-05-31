@@ -33,6 +33,10 @@ public class RoomServiceImpl implements RoomService {
 	public List<Room> findAllByOrderByNumber() {
 		return roomRepository.findAllByOrderByNumber();
 	}
+	
+	public List<Room> findManyByOfficeId(String officeId) {
+		return roomRepository.findManyByOfficeId(officeId);
+	}
 
 	public Room findById(String id) {
 		try {

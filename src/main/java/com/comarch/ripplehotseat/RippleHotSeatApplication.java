@@ -9,9 +9,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 
+import com.comarch.ripplehotseat.model.Desk;
+import com.comarch.ripplehotseat.model.Desk.Orientation;
+import com.comarch.ripplehotseat.model.Office;
 import com.comarch.ripplehotseat.model.Room;
 import com.comarch.ripplehotseat.model.User;
 import com.comarch.ripplehotseat.service.DeskService;
+import com.comarch.ripplehotseat.service.OfficeService;
 import com.comarch.ripplehotseat.service.ReservationService;
 import com.comarch.ripplehotseat.service.RoomService;
 import com.comarch.ripplehotseat.service.UserService;
@@ -28,6 +32,8 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 	@Autowired
 	public DeskService deskService;
 	@Autowired
+	public OfficeService officeService;
+	@Autowired
 	public ReservationService reservationService;
 	@Autowired
 	public RoomService roomService;
@@ -40,7 +46,7 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 
 	public void run(String... args) throws Exception {
 		//BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		if(deskService.count() == 0 && reservationService.count() == 0 && roomService.count() == 0 && userService.count() == 0) {
+		if(deskService.count() == 0 && officeService.count() == 0 && reservationService.count() == 0 && roomService.count() == 0 && userService.count() == 0) {
 			initializeDatabase();
 			/*
 			System.out.println("Database is empty");
@@ -77,6 +83,7 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 	
 	public void dropDatabase() {
 		deskService.deleteAll();
+		officeService.deleteAll();
 		reservationService.deleteAll();
 		roomService.deleteAll();
 		userService.deleteAll();
@@ -84,7 +91,9 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 	
 	public void initializeDatabase() {
 		userService.save(new User("login", "$2a$10$XYelR9Jo1kGbIPWgdPnNE.EcUo7tiXZauAVu9C7Y2E2D6aMK1I7QW", true));
-		roomService.save(new Room(1, 0, "office", null));
+		officeService.save(new Office("office", null));
+		roomService.save(new Room(0, 0, officeService.findAll().get(0).getId(), 0, 0, null));
+		deskService.save(new Desk(roomService.findAll().get(0).getId(), 0, 0, Orientation.SOUTH, 0, null, true));
 	}
 
 }

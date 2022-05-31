@@ -15,6 +15,8 @@ public interface RoomService {
 	
 	List<Room> findAllByOrderByNumber();
 	
+	List<Room> findManyByOfficeId(String officeId);
+	
 	Room findById(String id);
 	
 	Room save(Room room);
