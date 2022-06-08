@@ -12,32 +12,25 @@ import com.comarch.ripplehotseat.repository.RoomRepository;
 import com.comarch.ripplehotseat.service.DeskService;
 import com.comarch.ripplehotseat.service.RoomService;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 @Service
 public class RoomServiceImpl implements RoomService {
 
 	@Autowired
 	public RoomRepository roomRepository;
-	
 	@Autowired
 	public DeskService deskService;
 	
+	@Override
 	public List<Room> findAll() {
 		return roomRepository.findAll();
 	}
-
-	public List<Room> findAllByOrderByNumber() {
-		return roomRepository.findAllByOrderByNumber();
-	}
 	
-	public List<Room> findManyByOfficeId(String officeId) {
-		return roomRepository.findManyByOfficeId(officeId);
+	@Override
+	public List<Room> findManyByLevelId(String levelId) {
+		return roomRepository.findManyByLevelId(levelId);
 	}
 
+	@Override
 	public Room findById(String id) {
 		try {
 			return roomRepository.findById(id).get();
@@ -46,10 +39,12 @@ public class RoomServiceImpl implements RoomService {
 		}
 	}
 
+	@Override
 	public Room save(Room room) {
 		return roomRepository.save(room);
 	}
 
+	@Override
 	public void deleteById(String id) {
 		for(Desk desk : deskService.findManyByRoomId(id)) {
 			deskService.deleteById(desk.getId());
@@ -57,10 +52,12 @@ public class RoomServiceImpl implements RoomService {
 		roomRepository.deleteById(id);
 	}
 
+	@Override
 	public void deleteAll() {
 		roomRepository.deleteAll();
 	}
 	
+	@Override
 	public long count() {
 		return roomRepository.count();
 	}

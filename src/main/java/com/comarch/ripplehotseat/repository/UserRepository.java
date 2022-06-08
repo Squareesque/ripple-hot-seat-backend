@@ -4,13 +4,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.comarch.ripplehotseat.model.User;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 public interface UserRepository extends MongoRepository<User, String> {
 	
-	User findByLogin(String login);
+	User findByUsername(String username);
 	
 }

@@ -4,18 +4,15 @@ import java.util.List;
 
 import com.comarch.ripplehotseat.model.Desk;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 public interface DeskService {
 
 	List<Desk> findAll();
 	
+	List<Desk> findManyByRoomId(String roomId);
+	
 	Desk findById(String id);
 	
-	List<Desk> findManyByRoomId(String roomId);
+	Desk findByBeaconId(String beaconId);
 	
 	Desk save(Desk desk);
 	

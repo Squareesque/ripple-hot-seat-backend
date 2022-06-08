@@ -3,53 +3,36 @@ package com.comarch.ripplehotseat.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 @Document(collection = "desks")
 public class Desk {
 	
 	public enum Orientation {
-		NORTH("north"),
-		SOUTH("south"),
-		EAST("east"),
-		WEST("west");
-		
-		private String text;
-		
-		Orientation(String text) {
-			this.text = text;
-		}
-		
-		@Override
-		public String toString() {
-			return text;
-		}
+		NORTH,
+		NORTH_EAST,
+		EAST,
+		SOUTH_EAST,
+		SOUTH,
+		SOUTH_WEST,
+		WEST,
+		NORTH_WEST;
 	}
 	
 	@Id
 	private String id;
 	private String roomId;
+	private String beaconId;
+	private int number;
 	private int positionX;
 	private int positionY;
 	private Orientation orientation;
-	private int number;
-	private String beaconId;
-	private boolean isFree;
 	
-	public Desk(){
-	}
-	
-	public Desk(String roomId, int positionX, int positionY, Orientation orientation, int number, String beaconId, boolean isFree){
+	public Desk(String roomId, String beaconId, int number, int positionX, int positionY, Orientation orientation){
 		this.roomId = roomId;
+		this.beaconId = beaconId;
+		this.number = number;
 		this.positionX = positionX;
 		this.positionY = positionY;
-		this.setOrientation(orientation);
-		this.setNumber(number);
-		this.setBeaconId(beaconId);
-		this.setFree(isFree);
+		this.orientation = orientation;
 	}
 
 	public String getId() {
@@ -66,6 +49,22 @@ public class Desk {
 
 	public void setRoomId(String roomId) {
 		this.roomId = roomId;
+	}
+
+	public String getBeaconId() {
+		return beaconId;
+	}
+
+	public void setBeaconId(String beaconId) {
+		this.beaconId = beaconId;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
 	public int getPositionX() {
@@ -91,35 +90,11 @@ public class Desk {
 	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
 	}
-
-	public int getNumber() {
-		return number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
-	}
-
-	public String getBeaconId() {
-		return beaconId;
-	}
-
-	public void setBeaconId(String beaconId) {
-		this.beaconId = beaconId;
-	}
-
-	public boolean isFree() {
-		return isFree;
-	}
-
-	public void setFree(boolean isFree) {
-		this.isFree = isFree;
-	}
 	
 	@Override
 	public String toString() {
-		return "Desk [id=" + id + ", roomId=" + roomId + ", positionX=" + positionX + ", positionY=" + positionY
-				+ ", orientation=" + orientation + ", number=" + number + ", beaconId=" + beaconId + ", isFree=" + isFree + "]";
+		return "Desk [id=" + id + ", roomId=" + roomId + ", beaconId=" + beaconId + ", number=" + number +
+				", positionX=" + positionX + ", positionY=" + positionY + ", orientation=" + orientation + "]";
 	}
 	
 }

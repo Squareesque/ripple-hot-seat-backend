@@ -6,20 +6,19 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.comarch.ripplehotseat.model.Level;
 import com.comarch.ripplehotseat.model.Office;
-import com.comarch.ripplehotseat.model.Room;
 import com.comarch.ripplehotseat.repository.OfficeRepository;
+import com.comarch.ripplehotseat.service.LevelService;
 import com.comarch.ripplehotseat.service.OfficeService;
-import com.comarch.ripplehotseat.service.RoomService;
 
 @Service
 public class OfficeServiceImpl implements OfficeService {
 
 	@Autowired
 	public OfficeRepository officeRepository;
-	
 	@Autowired
-	public RoomService roomService;
+	public LevelService levelService;
 	
 	@Override
 	public List<Office> findAll() {
@@ -47,8 +46,8 @@ public class OfficeServiceImpl implements OfficeService {
 
 	@Override
 	public void deleteById(String id) {
-		for(Room room : roomService.findManyByOfficeId(id)) {
-			roomService.deleteById(room.getId());
+		for(Level level : levelService.findManyByOfficeId(id)) {
+			levelService.deleteById(level.getId());
 		}
 		officeRepository.deleteById(id);
 	}
@@ -56,7 +55,6 @@ public class OfficeServiceImpl implements OfficeService {
 	@Override
 	public void deleteAll() {
 		officeRepository.deleteAll();
-
 	}
 
 	@Override

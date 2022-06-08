@@ -3,30 +3,20 @@ package com.comarch.ripplehotseat.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- * 
- */
 @Document(collection = "rooms")
 public class Room {
 	
 	@Id
 	private String id;
+	private String levelId;
 	private int number;
-	private int level;
-	private String officeId;
 	private int positionX;
 	private int positionY;
 	private byte[] picture;
 	
-	public Room() {
-	}
-	
-	public Room(int number, int level, String officeId, int positionX, int positionY, byte[] picture) {
+	public Room(String levelId, int number, int positionX, int positionY) {
+		this.levelId = levelId;
 		this.number = number;
-		this.level = level;
-		this.officeId = officeId;
 		this.positionX = positionX;
 		this.positionY = positionY;
 	}
@@ -38,6 +28,14 @@ public class Room {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	public String getLevelId() {
+		return levelId;
+	}
+	
+	public void setLevelId(String levelId) {
+		this.levelId = levelId;
+	}
 
 	public int getNumber() {
 		return number;
@@ -45,22 +43,6 @@ public class Room {
 	
 	public void setNumber(int number) {
 		this.number = number;
-	}
-	
-	public int getLevel() {
-		return level;
-	}
-	
-	public void setLevel(int level) {
-		this.level = level;
-	}
-	
-	public String getOfficeId() {
-		return officeId;
-	}
-
-	public void setOfficeId(String officeId) {
-		this.officeId = officeId;
 	}
 
 	public int getPositionX() {
@@ -89,7 +71,7 @@ public class Room {
 
 	@Override
 	public String toString() {
-		return "Room [id=" + id + ", number=" + number + ", level=" + level + ", officeId=" + officeId + ", positionX=" + positionX + ", positionY=" + positionY + ", picture=" + picture + "]";
+		return "Room [id=" + id + ", levelId=" + levelId + ", number=" + number + ", positionX=" + positionX + ", positionY=" + positionY + ", picture=" + picture + "]";
 	}
 	
 }

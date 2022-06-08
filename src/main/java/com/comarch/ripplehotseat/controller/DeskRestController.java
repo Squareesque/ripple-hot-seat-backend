@@ -17,38 +17,79 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comarch.ripplehotseat.dto.DeskDTO;
 import com.comarch.ripplehotseat.model.Desk;
+import com.comarch.ripplehotseat.model.Level;
+import com.comarch.ripplehotseat.model.Office;
+import com.comarch.ripplehotseat.model.Room;
 import com.comarch.ripplehotseat.service.DeskService;
+import com.comarch.ripplehotseat.service.LevelService;
+import com.comarch.ripplehotseat.service.OfficeService;
 import com.comarch.ripplehotseat.service.RoomService;
 import com.comarch.ripplehotseat.util.ObjectMapperUtils;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
-@RestController
 @CrossOrigin("https://ripple-hot-seat-backend-app.herokuapp.com")
+@RestController
 @RequestMapping("/desks")
 public class DeskRestController {
 
 	@Autowired
 	public DeskService deskService;
 	@Autowired
+	public LevelService levelService;
+	@Autowired
+	public OfficeService officeService;
+	@Autowired
 	public RoomService roomService;
 	
 	@GetMapping(value="")
 	public List<DeskDTO> findAll() {
-		return ObjectMapperUtils.mapAll(deskService.findAll(), DeskDTO.class);
-	}
-	
-	@GetMapping(value = "/byId/{id}")
-	public DeskDTO findById(@PathVariable("id") String id) {
-		return ObjectMapperUtils.map(deskService.findById(id), DeskDTO.class);
+		List<DeskDTO> list = ObjectMapperUtils.mapAll(deskService.findAll(), DeskDTO.class);
+		for(DeskDTO deskDTO : list) {
+			Room room = roomService.findById(deskDTO.getRoomId());
+			deskDTO.setRoomNumber(room.getNumber());
+			Level level = levelService.findById(room.getLevelId());
+			deskDTO.setLevelNumber(level.getNumber());
+			deskDTO.setOfficeName(officeService.findById(level.getOfficeId()).getName());
+		}
+		return list;
 	}
 	
 	@GetMapping(value = "/byRoomId/{roomId}")
 	public List<DeskDTO> findManyByRoomId(@PathVariable("roomId") String roomId) {
-		return ObjectMapperUtils.mapAll(deskService.findManyByRoomId(roomId), DeskDTO.class);
+		List<DeskDTO> list = ObjectMapperUtils.mapAll(deskService.findManyByRoomId(roomId), DeskDTO.class);
+		Room room = roomService.findById(roomId);
+		int roomNumber = room.getNumber();
+		Level level = levelService.findById(room.getLevelId());
+		int levelNumber = level.getNumber();
+		Office office = officeService.findById(level.getOfficeId());
+		String officeName = office.getName();
+		for(DeskDTO deskDTO : list) {
+			deskDTO.setRoomNumber(roomNumber);
+			deskDTO.setLevelNumber(levelNumber);
+			deskDTO.setOfficeName(officeName);
+		}
+		return list;
+	}
+	
+	@GetMapping(value = "/byId/{id}")
+	public DeskDTO findById(@PathVariable("id") String id) {
+		DeskDTO deskDTO = ObjectMapperUtils.map(deskService.findById(id), DeskDTO.class);
+		Room room = roomService.findById(deskDTO.getRoomId());
+		deskDTO.setRoomNumber(room.getNumber());
+		Level level = levelService.findById(room.getLevelId());
+		deskDTO.setLevelNumber(level.getNumber());
+		deskDTO.setOfficeName(officeService.findById(level.getOfficeId()).getName());
+		return deskDTO;
+	}
+	
+	@GetMapping(value = "/byBeaconId/{beaconId}")
+	public DeskDTO findManyByBeaconId(@PathVariable("beaconId") String beaconId) {
+		DeskDTO deskDTO = ObjectMapperUtils.map(deskService.findByBeaconId(beaconId), DeskDTO.class);
+		Room room = roomService.findById(deskDTO.getRoomId());
+		deskDTO.setRoomNumber(room.getNumber());
+		Level level = levelService.findById(room.getLevelId());
+		deskDTO.setLevelNumber(level.getNumber());
+		deskDTO.setOfficeName(officeService.findById(level.getOfficeId()).getName());
+		return deskDTO;
 	}
 	
 	@PostMapping(value = "/save")
@@ -58,6 +99,17 @@ public class DeskRestController {
 		}
 		if(roomService.findById(deskDTO.getRoomId()) == null) {
 			return new ResponseEntity<String>("'roomId' must be of an existing room", HttpStatus.FORBIDDEN);
+		}
+		if(deskDTO.getNumber() <= 0) {
+			return new ResponseEntity<String>("'number' must be positive", HttpStatus.FORBIDDEN);
+		}
+		for(Desk desk : deskService.findManyByRoomId(deskDTO.getRoomId())) {
+			if(desk.getNumber() == deskDTO.getNumber()) {
+				return new ResponseEntity<String>("'number' must be unique between desks of the same room", HttpStatus.FORBIDDEN);
+			}
+		}
+		if(deskDTO.getPositionX() < 0 || deskDTO.getPositionY() < 0) {
+			return new ResponseEntity<String>("'possitionX' and 'possitionY' must be positive", HttpStatus.FORBIDDEN);
 		}
 		deskDTO.setId(null);
 		deskService.save(ObjectMapperUtils.map(deskDTO, Desk.class));
@@ -74,6 +126,17 @@ public class DeskRestController {
 		}
 		if(roomService.findById(deskDTO.getRoomId()) == null) {
 			return new ResponseEntity<String>("'roomId' must be of an existing room", HttpStatus.FORBIDDEN);
+		}
+		if(deskDTO.getNumber() <= 0) {
+			return new ResponseEntity<String>("'number' must be positive", HttpStatus.FORBIDDEN);
+		}
+		for(Desk desk : deskService.findManyByRoomId(deskDTO.getRoomId())) {
+			if(desk.getNumber() == deskDTO.getNumber()) {
+				return new ResponseEntity<String>("'number' must be unique between desks of the same room", HttpStatus.FORBIDDEN);
+			}
+		}
+		if(deskDTO.getPositionX() < 0 || deskDTO.getPositionY() < 0) {
+			return new ResponseEntity<String>("'possitionX' and 'possitionY' must be positive", HttpStatus.FORBIDDEN);
 		}
 		deskDTO.setId(id);
 		deskService.save(ObjectMapperUtils.map(deskDTO, Desk.class));

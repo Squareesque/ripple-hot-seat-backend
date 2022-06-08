@@ -4,18 +4,11 @@ import java.util.List;
 
 import com.comarch.ripplehotseat.model.Room;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 public interface RoomService {
 	
 	List<Room> findAll();
 	
-	List<Room> findAllByOrderByNumber();
-	
-	List<Room> findManyByOfficeId(String officeId);
+	List<Room> findManyByLevelId(String levelId);
 	
 	Room findById(String id);
 	

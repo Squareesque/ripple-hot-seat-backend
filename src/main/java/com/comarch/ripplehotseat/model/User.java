@@ -3,25 +3,17 @@ package com.comarch.ripplehotseat.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 @Document(collection = "users")
 public class User {
 	
 	@Id
 	private String id;
-	private String login;
+	private String username;
 	private String password;
 	private boolean isAdmin;
 	
-	public User(){
-	}
-	
-	public User(String login, String password, boolean isAdmin){
-		this.login = login;
+	public User(String username, String password, boolean isAdmin){
+		this.username = username;
 		this.password = password;
 		this.isAdmin = isAdmin;
 	}
@@ -34,12 +26,12 @@ public class User {
 		this.id = id;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -60,7 +52,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", login=" + login + ", password=" + password + ", isAdmin=" + isAdmin + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", isAdmin=" + isAdmin + "]";
 	}
 	
 }

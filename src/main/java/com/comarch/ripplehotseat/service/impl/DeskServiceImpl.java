@@ -12,11 +12,6 @@ import com.comarch.ripplehotseat.repository.DeskRepository;
 import com.comarch.ripplehotseat.service.DeskService;
 import com.comarch.ripplehotseat.service.ReservationService;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 @Service
 public class DeskServiceImpl implements DeskService {
 
@@ -25,10 +20,17 @@ public class DeskServiceImpl implements DeskService {
 	@Autowired
 	public ReservationService reservationService;
 	
+	@Override
 	public List<Desk> findAll() {
 		return deskRepository.findAll();
 	}
 
+	@Override
+	public List<Desk> findManyByRoomId(String roomId) {
+		return deskRepository.findManyByRoomId(roomId);
+	}
+
+	@Override
 	public Desk findById(String id) {
 		try {
 			return deskRepository.findById(id).get();
@@ -37,14 +39,17 @@ public class DeskServiceImpl implements DeskService {
 		}
 	}
 
-	public List<Desk> findManyByRoomId(String roomId) {
-		return deskRepository.findManyByRoomId(roomId);
+	@Override
+	public Desk findByBeaconId(String beaconId) {
+		return deskRepository.findByBeaconId(beaconId);
 	}
-
+	
+	@Override
 	public Desk save(Desk desk) {
 		return deskRepository.save(desk);
 	}
 
+	@Override
 	public void deleteById(String id) {
 		for(Reservation reservation : reservationService.findManyByDeskId(id)) {
 			reservationService.deleteById(reservation.getId());
@@ -52,10 +57,12 @@ public class DeskServiceImpl implements DeskService {
 		deskRepository.deleteById(id);
 	}
 	
+	@Override
 	public void deleteAll() {
 		deskRepository.deleteAll();
 	}
 	
+	@Override
 	public long count() {
 		return deskRepository.count();
 	}

@@ -8,11 +8,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 public class ObjectMapperUtils {
 	
 	public static <T1, T2> List<T1> mapAll(List<T2> list, Class<T1> class1) {

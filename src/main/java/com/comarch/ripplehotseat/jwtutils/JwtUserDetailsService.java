@@ -19,7 +19,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 	UserService userService;
 	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		com.comarch.ripplehotseat.model.User user = userService.findByLogin(username);
+		com.comarch.ripplehotseat.model.User user = userService.findByUsername(username);
 		if (user != null) { 
 	    	return new User(username, user.getPassword(), new ArrayList<GrantedAuthority>()); 
 	    }

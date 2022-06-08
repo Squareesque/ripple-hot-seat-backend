@@ -4,18 +4,13 @@ import java.util.List;
 
 import com.comarch.ripplehotseat.model.User;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 public interface UserService {
 	
 	List<User> findAll();
 	
 	User findById(String id);
 	
-	User findByLogin(String login);
+	User findByUsername(String Username);
 	
 	User save(User user);
 	

@@ -11,25 +11,43 @@ import com.comarch.ripplehotseat.model.Reservation;
 import com.comarch.ripplehotseat.repository.ReservationRepository;
 import com.comarch.ripplehotseat.service.ReservationService;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
 	@Autowired
 	public ReservationRepository reservationRepository;
 	
+	@Override
 	public List<Reservation> findAll() {
 		return reservationRepository.findAll();
 	}
 
+	@Override
 	public List<Reservation> findAllByOrderByStartTime() {
 		return reservationRepository.findAllByOrderByStartTime();
 	}
 
+	@Override
+	public List<Reservation> findManyByDeskId(String deskId) {
+		return reservationRepository.findManyByDeskId(deskId);
+	}
+
+	@Override
+	public List<Reservation> findManyByUserId(String userId) {
+		return reservationRepository.findManyByUserId(userId);
+	}
+	
+	@Override
+	public List<Reservation> findManyByStartTime(Date startTime) {
+		return reservationRepository.findManyByStartTime(startTime);
+	}
+
+	@Override
+	public List<Reservation> findManyByEndTime(Date endTime) {
+		return reservationRepository.findManyByEndTime(endTime);
+	}
+
+	@Override
 	public Reservation findById(String id) {
 		try {
 			return reservationRepository.findById(id).get();
@@ -37,35 +55,23 @@ public class ReservationServiceImpl implements ReservationService {
 			return null;
 		}
 	}
-	
-	public List<Reservation> findManyByStartTime(Date startTime) {
-		return reservationRepository.findManyByStartTime(startTime);
-	}
 
-	public List<Reservation> findManyByEndTime(Date endTime) {
-		return reservationRepository.findManyByEndTime(endTime);
-	}
-
-	public List<Reservation> findManyByDeskId(String deskId) {
-		return reservationRepository.findManyByDeskId(deskId);
-	}
-
-	public List<Reservation> findManyByUserId(String userId) {
-		return reservationRepository.findManyByUserId(userId);
-	}
-
+	@Override
 	public Reservation save(Reservation reservation) {
 		return reservationRepository.save(reservation);
 	}
 
+	@Override
 	public void deleteById(String id) {
 		reservationRepository.deleteById(id);
 	}
 
+	@Override
 	public void deleteAll() {
 		reservationRepository.deleteAll();
 	}
 	
+	@Override
 	public long count() {
 		return reservationRepository.count();
 	}

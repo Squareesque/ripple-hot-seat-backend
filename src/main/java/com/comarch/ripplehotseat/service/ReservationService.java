@@ -5,26 +5,21 @@ import java.util.List;
 
 import com.comarch.ripplehotseat.model.Reservation;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 public interface ReservationService {
 
 	List<Reservation> findAll();
 	
 	List<Reservation> findAllByOrderByStartTime();
 	
-	Reservation findById(String id);
+	List<Reservation> findManyByDeskId(String deskId);
+	
+	List<Reservation> findManyByUserId(String userId);
 	
 	List<Reservation> findManyByStartTime(Date startTime);
 	
 	List<Reservation> findManyByEndTime(Date endTime);
 	
-	List<Reservation> findManyByDeskId(String deskId);
-	
-	List<Reservation> findManyByUserId(String userId);
+	Reservation findById(String id);
 	
 	Reservation save(Reservation reservation);
 	

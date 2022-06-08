@@ -20,13 +20,8 @@ import com.comarch.ripplehotseat.model.User;
 import com.comarch.ripplehotseat.service.UserService;
 import com.comarch.ripplehotseat.util.ObjectMapperUtils;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
-@RestController
 @CrossOrigin("https://ripple-hot-seat-backend-app.herokuapp.com")
+@RestController
 @RequestMapping("/users")
 public class UserRestController {
 
@@ -43,24 +38,24 @@ public class UserRestController {
 		return ObjectMapperUtils.map(userService.findById(id), UserDTO.class);
 	}
 	
-	@GetMapping(value = "/byLogin/{login}")
-	public UserDTO findByLogin(@PathVariable("login") String login) {
-		return ObjectMapperUtils.map(userService.findByLogin(login), UserDTO.class);
+	@GetMapping(value = "/byUsername/{username}")
+	public UserDTO findByUsername(@PathVariable("username") String username) {
+		return ObjectMapperUtils.map(userService.findByUsername(username), UserDTO.class);
 	}
 	
 	@PostMapping(value = "/save")
 	public ResponseEntity<String> save(@RequestBody UserDTO userDTO) {
-		if(userDTO.getLogin() == null || userDTO.getLogin().equals("") || userDTO.getPassword() == null || userDTO.getPassword().equals("")) {
-			return new ResponseEntity<String>("'login' and 'password' are required", HttpStatus.FORBIDDEN);
+		if(userDTO.getUsername() == null || userDTO.getUsername().isBlank() || userDTO.getPassword() == null || userDTO.getPassword().isBlank()) {
+			return new ResponseEntity<String>("'username' and 'password' are required", HttpStatus.FORBIDDEN);
 		}
-		if(!userDTO.getLogin().endsWith("@comarch.com")) {
-			return new ResponseEntity<String>("'login' must be a comarch email address (@comarch.com)", HttpStatus.FORBIDDEN);
+		if(!userDTO.getUsername().endsWith("@comarch.com")) {
+			return new ResponseEntity<String>("'username' must be a comarch email address (@comarch.com)", HttpStatus.FORBIDDEN);
 		}
-		if(userDTO.getPassword().length() <= 3) {
-			return new ResponseEntity<String>("'password' should be longer than 3 characters", HttpStatus.FORBIDDEN);
+		if(userDTO.getPassword().length() <= 5) {
+			return new ResponseEntity<String>("'password' should be longer than 5 characters", HttpStatus.FORBIDDEN);
 		}
-		if(userService.findByLogin(userDTO.getLogin()) != null) {
-			return new ResponseEntity<String>("'login' must be unique", HttpStatus.FORBIDDEN);
+		if(userService.findByUsername(userDTO.getUsername()) != null) {
+			return new ResponseEntity<String>("'username' must be unique", HttpStatus.FORBIDDEN);
 		}
 		userDTO.setId(null);
 		userDTO.encryptPassword();
@@ -74,17 +69,17 @@ public class UserRestController {
 		if(userService.findById(id) == null) {
 			return new ResponseEntity<String>("User could not be found", HttpStatus.NOT_FOUND);
 		}
-		if(userDTO.getLogin() == null || userDTO.getLogin().equals("") || userDTO.getPassword() == null || userDTO.getPassword().equals("")) {
-			return new ResponseEntity<String>("'login' and 'password' are required", HttpStatus.FORBIDDEN);
+		if(userDTO.getUsername() == null || userDTO.getUsername().isBlank() || userDTO.getPassword() == null || userDTO.getPassword().isBlank()) {
+			return new ResponseEntity<String>("'username' and 'password' are required", HttpStatus.FORBIDDEN);
 		}
-		if(!userDTO.getLogin().endsWith("@comarch.com")) {
-			return new ResponseEntity<String>("'login' must be a comarch email address (@comarch.com)", HttpStatus.FORBIDDEN);
+		if(!userDTO.getUsername().endsWith("@comarch.com")) {
+			return new ResponseEntity<String>("'username' must be a comarch email address (@comarch.com)", HttpStatus.FORBIDDEN);
 		}
-		if(userDTO.getPassword().length() <= 3) {
-			return new ResponseEntity<String>("'password' should be longer than 3 characters", HttpStatus.FORBIDDEN);
+		if(userDTO.getPassword().length() <= 5) {
+			return new ResponseEntity<String>("'password' should be longer than 5 characters", HttpStatus.FORBIDDEN);
 		}
-		if(userService.findByLogin(userDTO.getLogin()) != null) {
-			return new ResponseEntity<String>("'login' must be unique", HttpStatus.FORBIDDEN);
+		if(userService.findByUsername(userDTO.getUsername()) != null) {
+			return new ResponseEntity<String>("'username' must be unique", HttpStatus.FORBIDDEN);
 		}
 		userDTO.setId(id);
 		userDTO.encryptPassword();

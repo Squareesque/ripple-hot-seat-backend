@@ -18,45 +18,79 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comarch.ripplehotseat.dto.RoomDTO;
+import com.comarch.ripplehotseat.model.Level;
+import com.comarch.ripplehotseat.model.Office;
 import com.comarch.ripplehotseat.model.Room;
+import com.comarch.ripplehotseat.service.LevelService;
 import com.comarch.ripplehotseat.service.OfficeService;
 import com.comarch.ripplehotseat.service.RoomService;
 import com.comarch.ripplehotseat.util.ObjectMapperUtils;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
-@RestController
 @CrossOrigin("https://ripple-hot-seat-backend-app.herokuapp.com")
+@RestController
 @RequestMapping("/rooms")
 public class RoomRestController {
 
 	@Autowired
 	public RoomService roomService;
-	
+	@Autowired
+	public LevelService levelService;
 	@Autowired
 	public OfficeService officeService;
 	
 	@GetMapping(value="")
 	public List<RoomDTO> findAll() {
-		return ObjectMapperUtils.mapAll(roomService.findAll(), RoomDTO.class);
+		List<RoomDTO> list = ObjectMapperUtils.mapAll(roomService.findAll(), RoomDTO.class);
+		for(RoomDTO roomDTO : list) {
+			Level level = levelService.findById(roomDTO.getLevelId());
+			roomDTO.setLevelNumber(level.getNumber());
+			roomDTO.setOfficeName(officeService.findById(level.getOfficeId()).getName());
+		}
+		return list;
 	}
 	
-	@GetMapping(value="/orderByNumber")
-	public List<RoomDTO> findAllByOrderByNumber() {
-		return ObjectMapperUtils.mapAll(roomService.findAllByOrderByNumber(), RoomDTO.class);
+	@GetMapping(value = "/byLevelId/{levelId}")
+	public List<RoomDTO> findManyByLevelId(@PathVariable("levelId") String levelId) {
+		List<RoomDTO> list = ObjectMapperUtils.mapAll(roomService.findManyByLevelId(levelId), RoomDTO.class);
+		Level level = levelService.findById(levelId);
+		int levelNumber = level.getNumber();
+		Office office = officeService.findById(level.getOfficeId());
+		String officeName = office.getName();
+		for(RoomDTO roomDTO : list) {
+			roomDTO.setLevelNumber(levelNumber);
+			roomDTO.setOfficeName(officeName);
+		}
+		return list;
 	}
 	
 	@GetMapping(value = "/byId/{id}")
 	public RoomDTO findById(@PathVariable("id") String id) {
-		return ObjectMapperUtils.map(roomService.findById(id), RoomDTO.class);
+		RoomDTO roomDTO = ObjectMapperUtils.map(roomService.findById(id), RoomDTO.class);
+		Level level = levelService.findById(roomDTO.getLevelId());
+		roomDTO.setLevelNumber(level.getNumber());
+		roomDTO.setOfficeName(officeService.findById(level.getOfficeId()).getName());
+		return roomDTO;
 	}
 	
-	@GetMapping(value = "/byOfficeId/{officeId}")
-	public List<RoomDTO> findManyByOfficeId(@PathVariable("officeId") String officeId) {
-		return ObjectMapperUtils.mapAll(roomService.findManyByOfficeId(officeId), RoomDTO.class);
+	@GetMapping(value = "/byOfficeName/{officeName}/byLevelNumber/{levelNumber}/byNumber/{number}")
+	public RoomDTO findByOfficeNameAndLevelNumberAndNumber(@PathVariable("officeName") String officeName, @PathVariable("levelNumber") int levelNumber, @PathVariable("number") int number) {
+		Office office = officeService.findByName(officeName);
+		if(office == null) {
+			return ObjectMapperUtils.map(null, RoomDTO.class);
+		}
+		for(Level level : levelService.findManyByOfficeId(office.getId())) {
+			if(level.getNumber() == levelNumber) {
+				for(Room room : roomService.findManyByLevelId(level.getId())) {
+					if(room.getNumber() == number) {
+						RoomDTO roomDTO = ObjectMapperUtils.map(room, RoomDTO.class);
+						roomDTO.setLevelNumber(levelNumber);
+						roomDTO.setOfficeName(officeName);
+						return roomDTO;
+					}
+				}
+			}
+		}
+		return ObjectMapperUtils.map(null, RoomDTO.class);
 	}
 	
 	@GetMapping(value = "/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE) 
@@ -66,11 +100,22 @@ public class RoomRestController {
 	
 	@PostMapping(value = "/save")
 	public ResponseEntity<String> save(@RequestBody RoomDTO roomDTO) {
-		if(roomDTO.getOfficeId() == null) {
-			return new ResponseEntity<String>("'officeId' is required", HttpStatus.FORBIDDEN);
+		if(roomDTO.getLevelId() == null) {
+			return new ResponseEntity<String>("'levelId' is required", HttpStatus.FORBIDDEN);
 		}
-		if(officeService.findById(roomDTO.getOfficeId()) == null) {
-			return new ResponseEntity<String>("'officeId' must be of an existing office", HttpStatus.FORBIDDEN);
+		if(levelService.findById(roomDTO.getLevelId()) == null) {
+			return new ResponseEntity<String>("'levelId' must be of an existing office", HttpStatus.FORBIDDEN);
+		}
+		if(roomDTO.getNumber() <= 0) {
+			return new ResponseEntity<String>("'number' must be positive", HttpStatus.FORBIDDEN);
+		}
+		for(Room room : roomService.findManyByLevelId(roomDTO.getLevelId())) {
+			if(room.getNumber() == roomDTO.getNumber()) {
+				return new ResponseEntity<String>("'number' must be unique between rooms of the same level", HttpStatus.FORBIDDEN);
+			}
+		}
+		if(roomDTO.getPositionX() < 0 || roomDTO.getPositionY() < 0) {
+			return new ResponseEntity<String>("'possitionX' and 'possitionY' must be positive", HttpStatus.FORBIDDEN);
 		}
 		roomDTO.setId(null);
 		roomService.save(ObjectMapperUtils.map(roomDTO, Room.class));
@@ -90,11 +135,22 @@ public class RoomRestController {
 		if(roomService.findById(id) == null) {
 			return new ResponseEntity<String>("Room could not be found", HttpStatus.NOT_FOUND);
 		}
-		if(roomDTO.getOfficeId() == null) {
-			return new ResponseEntity<String>("'officeId' is required", HttpStatus.FORBIDDEN);
+		if(roomDTO.getLevelId() == null) {
+			return new ResponseEntity<String>("'levelId' is required", HttpStatus.FORBIDDEN);
 		}
-		if(officeService.findById(roomDTO.getOfficeId()) == null) {
-			return new ResponseEntity<String>("'officeId' must be of an existing office", HttpStatus.FORBIDDEN);
+		if(levelService.findById(roomDTO.getLevelId()) == null) {
+			return new ResponseEntity<String>("'levelId' must be of an existing office", HttpStatus.FORBIDDEN);
+		}
+		if(roomDTO.getNumber() <= 0) {
+			return new ResponseEntity<String>("'number' must be positive", HttpStatus.FORBIDDEN);
+		}
+		for(Room room : roomService.findManyByLevelId(roomDTO.getLevelId())) {
+			if(room.getNumber() == roomDTO.getNumber() && room.getId() != id) {
+				return new ResponseEntity<String>("'number' must be unique between rooms of the same level", HttpStatus.FORBIDDEN);
+			}
+		}
+		if(roomDTO.getPositionX() < 0 || roomDTO.getPositionY() < 0) {
+			return new ResponseEntity<String>("'possitionX' and 'possitionY' must be positive", HttpStatus.FORBIDDEN);
 		}
 		roomDTO.setId(id);
 		roomService.save(ObjectMapperUtils.map(roomDTO, Room.class));

@@ -17,71 +17,160 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comarch.ripplehotseat.dto.ReservationDTO;
+import com.comarch.ripplehotseat.model.Desk;
+import com.comarch.ripplehotseat.model.Level;
+import com.comarch.ripplehotseat.model.Office;
 import com.comarch.ripplehotseat.model.Reservation;
+import com.comarch.ripplehotseat.model.Room;
+import com.comarch.ripplehotseat.model.User;
 import com.comarch.ripplehotseat.service.DeskService;
+import com.comarch.ripplehotseat.service.LevelService;
+import com.comarch.ripplehotseat.service.OfficeService;
 import com.comarch.ripplehotseat.service.ReservationService;
+import com.comarch.ripplehotseat.service.RoomService;
 import com.comarch.ripplehotseat.service.UserService;
 import com.comarch.ripplehotseat.util.ObjectMapperUtils;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
-@RestController
 @CrossOrigin("https://ripple-hot-seat-backend-app.herokuapp.com")
+@RestController
 @RequestMapping("/reservations")
 public class ReservationRestController {
 
 	@Autowired
+	public ReservationService reservationService;
+	@Autowired
 	public DeskService deskService;
 	@Autowired
-	public ReservationService reservationService;
+	public LevelService levelService;
+	@Autowired
+	public OfficeService officeService;
+	@Autowired
+	public RoomService roomService;
 	@Autowired
 	public UserService userService;
 	
 	@GetMapping(value="")
 	public List<ReservationDTO> findAll() {
-		return ObjectMapperUtils.mapAll(reservationService.findAll(), ReservationDTO.class);
+		List<ReservationDTO> list = ObjectMapperUtils.mapAll(reservationService.findAll(), ReservationDTO.class);
+		for(ReservationDTO reservationDTO : list) {
+			Desk desk = deskService.findById(reservationDTO.getDeskId());
+			reservationDTO.setDeskNumber(desk.getNumber());
+			Room room = roomService.findById(desk.getRoomId());
+			reservationDTO.setRoomNumber(room.getNumber());
+			Level level = levelService.findById(room.getLevelId());
+			reservationDTO.setLevelNumber(level.getNumber());
+			reservationDTO.setOfficeName(officeService.findById(level.getOfficeId()).getName());
+			reservationDTO.setUsername(userService.findById(reservationDTO.getUserId()).getUsername());
+		}
+		return list;
 	}
 	
 	@GetMapping(value="/orderByStartTime")
 	public List<ReservationDTO> findAllByOrderByStartTime() {
-		return ObjectMapperUtils.mapAll(reservationService.findAllByOrderByStartTime(), ReservationDTO.class);
-	}
-	
-	@GetMapping(value = "/byId/{id}")
-	public ReservationDTO findById(@PathVariable("id") String id) {
-		return ObjectMapperUtils.map(reservationService.findById(id), ReservationDTO.class);
-	}
-	
-	@GetMapping(value = "/byStartTime/{startTime}")
-	public List<ReservationDTO> findManyByStartTime(@PathVariable("startTime") Date startTime) {
-		return ObjectMapperUtils.mapAll(reservationService.findManyByStartTime(startTime), ReservationDTO.class);
-	}
-	
-	@GetMapping(value = "/byEndTime/{endTime}")
-	public List<ReservationDTO> findManyByEndTime(@PathVariable("endTime") Date endTime) {
-		return ObjectMapperUtils.mapAll(reservationService.findManyByEndTime(endTime), ReservationDTO.class);
+		List<ReservationDTO> list = ObjectMapperUtils.mapAll(reservationService.findAllByOrderByStartTime(), ReservationDTO.class);
+		for(ReservationDTO reservationDTO : list) {
+			Desk desk = deskService.findById(reservationDTO.getDeskId());
+			reservationDTO.setDeskNumber(desk.getNumber());
+			Room room = roomService.findById(desk.getRoomId());
+			reservationDTO.setRoomNumber(room.getNumber());
+			Level level = levelService.findById(room.getLevelId());
+			reservationDTO.setLevelNumber(level.getNumber());
+			reservationDTO.setOfficeName(officeService.findById(level.getOfficeId()).getName());
+			reservationDTO.setUsername(userService.findById(reservationDTO.getUserId()).getUsername());
+		}
+		return list;
 	}
 	
 	@GetMapping(value = "/byDeskId/{deskId}")
 	public List<ReservationDTO> findManyByDeskId(@PathVariable("deskId") String deskId) {
-		return ObjectMapperUtils.mapAll(reservationService.findManyByDeskId(deskId), ReservationDTO.class);
+		List<ReservationDTO> list = ObjectMapperUtils.mapAll(reservationService.findManyByDeskId(deskId), ReservationDTO.class);
+		Desk desk = deskService.findById(deskId);
+		int deskNumber = desk.getNumber();
+		Room room = roomService.findById(desk.getRoomId());
+		int roomNumber = room.getNumber();
+		Level level = levelService.findById(room.getLevelId());
+		int levelNumber = level.getNumber();
+		Office office = officeService.findById(level.getOfficeId());
+		String officeName = office.getName();
+		for(ReservationDTO reservationDTO : list) {
+			reservationDTO.setDeskNumber(deskNumber);
+			reservationDTO.setRoomNumber(roomNumber);
+			reservationDTO.setLevelNumber(levelNumber);
+			reservationDTO.setOfficeName(officeName);
+			reservationDTO.setUsername(userService.findById(reservationDTO.getUserId()).getUsername());
+		}
+		return list;
 	}
 	
 	@GetMapping(value = "/byUserId/{userId}")
 	public List<ReservationDTO> findManyByUserId(@PathVariable("userId") String userId) {
-		return ObjectMapperUtils.mapAll(reservationService.findManyByUserId(userId), ReservationDTO.class);
+		List<ReservationDTO> list = ObjectMapperUtils.mapAll(reservationService.findManyByUserId(userId), ReservationDTO.class);
+		User user = userService.findById(userId);
+		String username = user.getUsername();
+		for(ReservationDTO reservationDTO : list) {
+			Desk desk = deskService.findById(reservationDTO.getDeskId());
+			reservationDTO.setDeskNumber(desk.getNumber());
+			Room room = roomService.findById(desk.getRoomId());
+			reservationDTO.setRoomNumber(room.getNumber());
+			Level level = levelService.findById(room.getLevelId());
+			reservationDTO.setLevelNumber(level.getNumber());
+			reservationDTO.setOfficeName(officeService.findById(level.getOfficeId()).getName());
+			reservationDTO.setUsername(username);
+		}
+		return list;
+	}
+	
+	@GetMapping(value = "/byStartTime/{startTime}")
+	public List<ReservationDTO> findManyByStartTime(@PathVariable("startTime") Date startTime) {
+		List<ReservationDTO> list = ObjectMapperUtils.mapAll(reservationService.findManyByStartTime(startTime), ReservationDTO.class);
+		for(ReservationDTO reservationDTO : list) {
+			Desk desk = deskService.findById(reservationDTO.getDeskId());
+			reservationDTO.setDeskNumber(desk.getNumber());
+			Room room = roomService.findById(desk.getRoomId());
+			reservationDTO.setRoomNumber(room.getNumber());
+			Level level = levelService.findById(room.getLevelId());
+			reservationDTO.setLevelNumber(level.getNumber());
+			reservationDTO.setOfficeName(officeService.findById(level.getOfficeId()).getName());
+			reservationDTO.setUsername(userService.findById(reservationDTO.getUserId()).getUsername());
+		}
+		return list;
+	}
+	
+	@GetMapping(value = "/byEndTime/{endTime}")
+	public List<ReservationDTO> findManyByEndTime(@PathVariable("endTime") Date endTime) {
+		List<ReservationDTO> list = ObjectMapperUtils.mapAll(reservationService.findManyByEndTime(endTime), ReservationDTO.class);
+		for(ReservationDTO reservationDTO : list) {
+			Desk desk = deskService.findById(reservationDTO.getDeskId());
+			reservationDTO.setDeskNumber(desk.getNumber());
+			Room room = roomService.findById(desk.getRoomId());
+			reservationDTO.setRoomNumber(room.getNumber());
+			Level level = levelService.findById(room.getLevelId());
+			reservationDTO.setLevelNumber(level.getNumber());
+			reservationDTO.setOfficeName(officeService.findById(level.getOfficeId()).getName());
+			reservationDTO.setUsername(userService.findById(reservationDTO.getUserId()).getUsername());
+		}
+		return list;
+	}
+	
+	@GetMapping(value = "/byId/{id}")
+	public ReservationDTO findById(@PathVariable("id") String id) {
+		ReservationDTO reservationDTO = ObjectMapperUtils.map(reservationService.findById(id), ReservationDTO.class);
+		Desk desk = deskService.findById(reservationDTO.getDeskId());
+		reservationDTO.setDeskNumber(desk.getNumber());
+		Room room = roomService.findById(desk.getRoomId());
+		reservationDTO.setRoomNumber(room.getNumber());
+		Level level = levelService.findById(room.getLevelId());
+		reservationDTO.setLevelNumber(level.getNumber());
+		reservationDTO.setOfficeName(officeService.findById(level.getOfficeId()).getName());
+		reservationDTO.setUsername(userService.findById(reservationDTO.getUserId()).getUsername());
+		return reservationDTO;
 	}
 	
 	@PostMapping(value = "/save")
 	public ResponseEntity<String> save(@RequestBody ReservationDTO reservationDTO) {
-		if(reservationDTO.getStartTime() == null || reservationDTO.getEndTime() == null || reservationDTO.getDeskId() == null || reservationDTO.getUserId() == null) {
-			return new ResponseEntity<String>("'startTime', 'endTime', 'deskId' and 'userId' are required", HttpStatus.FORBIDDEN);
-		}
-		if(!reservationDTO.getStartTime().before(reservationDTO.getEndTime())) {
-			return new ResponseEntity<String>("'startTime' must be before 'endTime'", HttpStatus.FORBIDDEN);
+		if(reservationDTO.getDeskId() == null || reservationDTO.getDeskId().isBlank() || reservationDTO.getUserId() == null ||
+				reservationDTO.getUserId().isBlank() || reservationDTO.getStartTime() == null || reservationDTO.getEndTime() == null) {
+			return new ResponseEntity<String>("'deskId', 'userId', 'startTime', 'endTime' are required", HttpStatus.FORBIDDEN);
 		}
 		if(deskService.findById(reservationDTO.getDeskId()) == null) {
 			return new ResponseEntity<String>("'deskId' must be of an existing desk", HttpStatus.FORBIDDEN);
@@ -89,29 +178,28 @@ public class ReservationRestController {
 		if(userService.findById(reservationDTO.getUserId()) == null) {
 			return new ResponseEntity<String>("'userId' must be of an existing user", HttpStatus.FORBIDDEN);
 		}
+		if(!reservationDTO.getIsPermanent() && !reservationDTO.getStartTime().before(reservationDTO.getEndTime())) {
+			return new ResponseEntity<String>("'startTime' must be before 'endTime'", HttpStatus.FORBIDDEN);
+		}
 		reservationDTO.setId(null);
-		Reservation r = ObjectMapperUtils.map(reservationDTO, Reservation.class);
-		System.out.println(r);
-		reservationService.save(r);
+		reservationService.save(ObjectMapperUtils.map(reservationDTO, Reservation.class));
 		return new ResponseEntity<String>("Reservation added successfully", HttpStatus.OK);
 	}
 	
 	@PatchMapping(value = "/update/{id}")
 	public ResponseEntity<String> update(@PathVariable("id") String id, @RequestBody ReservationDTO reservationDTO) {
-		if(reservationService.findById(id) == null) {
-			return new ResponseEntity<String>("Reservation could not be found", HttpStatus.NOT_FOUND);
-		}
-		if(reservationDTO.getStartTime() == null || reservationDTO.getEndTime() == null || reservationDTO.getStartTime() == null || reservationDTO.getEndTime() == null) {
-			return new ResponseEntity<String>("'startTime', 'endTime', 'deskId' and 'userId' are required", HttpStatus.FORBIDDEN);
-		}
-		if(!reservationDTO.getStartTime().before(reservationDTO.getEndTime())) {
-			return new ResponseEntity<String>("'startTime' must be before 'endTime'", HttpStatus.FORBIDDEN);
+		if(reservationDTO.getDeskId() == null || reservationDTO.getDeskId().isBlank() || reservationDTO.getUserId() == null ||
+				reservationDTO.getUserId().isBlank() || reservationDTO.getStartTime() == null || reservationDTO.getEndTime() == null) {
+			return new ResponseEntity<String>("'deskId', 'userId', 'startTime', 'endTime' are required", HttpStatus.FORBIDDEN);
 		}
 		if(deskService.findById(reservationDTO.getDeskId()) == null) {
 			return new ResponseEntity<String>("'deskId' must be of an existing desk", HttpStatus.FORBIDDEN);
 		}
 		if(userService.findById(reservationDTO.getUserId()) == null) {
 			return new ResponseEntity<String>("'userId' must be of an existing user", HttpStatus.FORBIDDEN);
+		}
+		if(!reservationDTO.getIsPermanent() && !reservationDTO.getStartTime().before(reservationDTO.getEndTime())) {
+			return new ResponseEntity<String>("'startTime' must be before 'endTime'", HttpStatus.FORBIDDEN);
 		}
 		reservationDTO.setId(id);
 		reservationService.save(ObjectMapperUtils.map(reservationDTO, Reservation.class));

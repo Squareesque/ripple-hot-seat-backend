@@ -9,13 +9,9 @@ public class Office {
 	@Id
 	private String id;
 	private String name;
-	private byte[] picture;
 	
-	public Office(){
-	}
-	
-	public Office(String name, byte[] picture){
-		
+	public Office(String name){
+		this.name = name;
 	}
 
 	public String getId() {
@@ -33,17 +29,9 @@ public class Office {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public byte[] getPicture() {
-		return picture;
-	}
-
-	public void setPicture(byte[] picture) {
-		this.picture = picture;
-	}
 	
 	@Override
 	public String toString() {
-		return "Office [id=" + id + ", name=" + name + ", picture=" + picture + "]";
+		return "Office [id=" + id + ", name=" + name + "]";
 	}
 }

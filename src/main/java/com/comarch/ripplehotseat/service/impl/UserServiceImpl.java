@@ -12,24 +12,20 @@ import com.comarch.ripplehotseat.repository.UserRepository;
 import com.comarch.ripplehotseat.service.ReservationService;
 import com.comarch.ripplehotseat.service.UserService;
 
-/**
- * 
- * @author Krzysztof Sajkowski
- *
- */
 @Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	public UserRepository userRepository;
-	
 	@Autowired
 	public ReservationService reservationService;
 	
+	@Override
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
 
+	@Override
 	public User findById(String id) {
 		try {
 			return userRepository.findById(id).get();
@@ -38,14 +34,17 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	public User findByLogin(String login) {
-		return userRepository.findByLogin(login);
+	@Override
+	public User findByUsername(String username) {
+		return userRepository.findByUsername(username);
 	}
 
+	@Override
 	public User save(User user) {
 		return userRepository.save(user);
 	}
 
+	@Override
 	public void deleteById(String id) {
 		for(Reservation reservation : reservationService.findManyByDeskId(id)) {
 			reservationService.deleteById(reservation.getId());
@@ -53,10 +52,12 @@ public class UserServiceImpl implements UserService {
 		userRepository.deleteById(id);
 	}
 	
+	@Override
 	public void deleteAll() {
 		userRepository.deleteAll();
 	}
 
+	@Override
 	public long count() {
 		return userRepository.count();
 	}
