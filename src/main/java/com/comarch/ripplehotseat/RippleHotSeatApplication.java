@@ -91,18 +91,18 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 		
 		Date date1, date2, date3, date4, date5, date6, date7, date8, date9, date10;
 		date1 = date2 = date3 = date4 = date5 = date6 = date7 = date8 = date9 = date10 = new Date();
-		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
+		DateFormat dateFormat = DateFormat.getDateInstance();
 		try {
-			date1 = dateFormat.parse("2022-06-11T08:00:00.000");
-			date2 = dateFormat.parse("2022-06-11T16:00:00.000");
-			date3 = dateFormat.parse("2022-06-12T08:00:00.000");
-			date4 = dateFormat.parse("2022-06-12T16:00:00.000");
-			date5 = dateFormat.parse("2022-06-13T08:00:00.000");
-			date6 = dateFormat.parse("2022-06-13T16:00:00.000");
-			date7 = dateFormat.parse("2022-06-14T08:00:00.000");
-			date8 = dateFormat.parse("2022-06-14T16:00:00.000");
-			date9 = dateFormat.parse("2022-06-15T08:00:00.000");
-			date10 = dateFormat.parse("2022-06-15T16:00:00.000");
+			date1 = dateFormat.parse("11/06/2022 08:00:00");
+			date2 = dateFormat.parse("11/06/2022 16:00:00");
+			date3 = dateFormat.parse("12/06/2022 08:00:00");
+			date4 = dateFormat.parse("12/06/2022 16:00:00");
+			date5 = dateFormat.parse("13/06/2022 08:00:00");
+			date6 = dateFormat.parse("13/06/2022 16:00:00");
+			date7 = dateFormat.parse("14/06/2022 08:00:00");
+			date8 = dateFormat.parse("14/06/2022 16:00:00");
+			date9 = dateFormat.parse("15/06/2022 08:00:00");
+			date10 = dateFormat.parse("15/06/2022 16:00:00");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
