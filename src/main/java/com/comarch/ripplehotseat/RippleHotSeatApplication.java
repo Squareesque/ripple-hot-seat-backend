@@ -88,7 +88,7 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 		Desk desk10 = deskService.save(new Desk(room3.getId(), null, 1, 0, 0, Orientation.SOUTH));
 		Desk desk11 = deskService.save(new Desk(room3.getId(), null, 2, 0, 0, Orientation.SOUTH));
 		Desk desk12 = deskService.save(new Desk(room3.getId(), null, 3, 0, 0, Orientation.SOUTH));
-		
+		/*
 		Date date1, date2, date3, date4, date5, date6, date7, date8, date9, date10;
 		date1 = date2 = date3 = date4 = date5 = date6 = date7 = date8 = date9 = date10 = new Date();
 		DateFormat dateFormat = DateFormat.getDateInstance();
@@ -112,6 +112,7 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 		Reservation reservation3 = reservationService.save(new Reservation(desk1.getId(), user1.getId(), false, date5, date6));
 		Reservation reservation4 = reservationService.save(new Reservation(desk3.getId(), user2.getId(), false, date7, date8));
 		Reservation reservation5 = reservationService.save(new Reservation(desk2.getId(), user1.getId(), false, date9, date10));
+		*/
 	}
 
 }
