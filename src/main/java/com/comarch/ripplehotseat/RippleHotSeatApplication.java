@@ -1,7 +1,7 @@
 package com.comarch.ripplehotseat;
 
-import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +63,7 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 	
 	@SuppressWarnings("unused")
 	public void initializeDatabase() {
+		
 		User user1 = userService.save(new User("username", "$2a$10$XYelR9Jo1kGbIPWgdPnNE.EcUo7tiXZauAVu9C7Y2E2D6aMK1I7QW", true));
 		User user2 = userService.save(new User("extra-user", "$2a$10$XYelR9Jo1kGbIPWgdPnNE.EcUo7tiXZauAVu9C7Y2E2D6aMK1I7QW", false));
 		
@@ -88,21 +89,21 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 		Desk desk10 = deskService.save(new Desk(room3.getId(), null, 1, 0, 0, Orientation.SOUTH));
 		Desk desk11 = deskService.save(new Desk(room3.getId(), null, 2, 0, 0, Orientation.SOUTH));
 		Desk desk12 = deskService.save(new Desk(room3.getId(), null, 3, 0, 0, Orientation.SOUTH));
-		/*
+		
 		Date date1, date2, date3, date4, date5, date6, date7, date8, date9, date10;
 		date1 = date2 = date3 = date4 = date5 = date6 = date7 = date8 = date9 = date10 = new Date();
-		DateFormat dateFormat = DateFormat.getDateInstance();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
 		try {
-			date1 = dateFormat.parse("11/06/2022 08:00:00");
-			date2 = dateFormat.parse("11/06/2022 16:00:00");
-			date3 = dateFormat.parse("12/06/2022 08:00:00");
-			date4 = dateFormat.parse("12/06/2022 16:00:00");
-			date5 = dateFormat.parse("13/06/2022 08:00:00");
-			date6 = dateFormat.parse("13/06/2022 16:00:00");
-			date7 = dateFormat.parse("14/06/2022 08:00:00");
-			date8 = dateFormat.parse("14/06/2022 16:00:00");
-			date9 = dateFormat.parse("15/06/2022 08:00:00");
-			date10 = dateFormat.parse("15/06/2022 16:00:00");
+			date1 = dateFormat.parse("2022-06-11 08:00:00");
+			date2 = dateFormat.parse("2022-06-11 16:00:00");
+			date3 = dateFormat.parse("2022-06-12 08:00:00");
+			date4 = dateFormat.parse("2022-06-12 16:00:00");
+			date5 = dateFormat.parse("2022-06-13 08:00:00");
+			date6 = dateFormat.parse("2022-06-13 16:00:00");
+			date7 = dateFormat.parse("2022-06-14 08:00:00");
+			date8 = dateFormat.parse("2022-06-14 16:00:00");
+			date9 = dateFormat.parse("2022-06-15 08:00:00");
+			date10 = dateFormat.parse("2022-06-15 16:00:00");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -112,7 +113,7 @@ public class RippleHotSeatApplication implements CommandLineRunner {
 		Reservation reservation3 = reservationService.save(new Reservation(desk1.getId(), user1.getId(), false, date5, date6));
 		Reservation reservation4 = reservationService.save(new Reservation(desk3.getId(), user2.getId(), false, date7, date8));
 		Reservation reservation5 = reservationService.save(new Reservation(desk2.getId(), user1.getId(), false, date9, date10));
-		*/
+		
 	}
 
 }
