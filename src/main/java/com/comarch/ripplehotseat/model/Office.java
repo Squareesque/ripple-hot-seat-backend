@@ -10,6 +10,8 @@ public class Office {
 	private String id;
 	private String name;
 	
+	public Office() {}
+	
 	public Office(String name){
 		this.name = name;
 	}

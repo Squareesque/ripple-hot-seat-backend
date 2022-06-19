@@ -24,7 +24,6 @@ public class JwtController {
 	@Autowired
 	private TokenManager tokenManager;
 	
-
 	@GetMapping(value = "/login")
 	public ResponseEntity<String> login(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception {
 		try {

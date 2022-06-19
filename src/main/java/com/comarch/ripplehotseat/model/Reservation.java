@@ -16,6 +16,8 @@ public class Reservation {
 	private Date startTime;
 	private Date endTime;
 	
+	public Reservation() {}
+	
 	public Reservation(String deskId, String userId, boolean isPermanent, Date startTime, Date endTime){
 		this.deskId = deskId;
 		this.userId = userId;

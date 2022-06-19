@@ -12,6 +12,8 @@ public class Level {
 	private int number;
 	private byte[] picture;
 	
+	public Level() {}
+	
 	public Level(String officeId, int number) {
 		this.officeId = officeId;
 		this.number = number;

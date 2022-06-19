@@ -14,6 +14,8 @@ public class Room {
 	private int positionY;
 	private byte[] picture;
 	
+	public Room() {}
+	
 	public Room(String levelId, int number, int positionX, int positionY) {
 		this.levelId = levelId;
 		this.number = number;

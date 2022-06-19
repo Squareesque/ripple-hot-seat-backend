@@ -26,6 +26,8 @@ public class Desk {
 	private int positionY;
 	private Orientation orientation;
 	
+	public Desk() {}
+	
 	public Desk(String roomId, String beaconId, int number, int positionX, int positionY, Orientation orientation){
 		this.roomId = roomId;
 		this.beaconId = beaconId;
