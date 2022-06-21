@@ -21,7 +21,7 @@ import com.comarch.ripplehotseat.model.User;
 import com.comarch.ripplehotseat.service.UserService;
 import com.comarch.ripplehotseat.util.ObjectMapperUtils;
 
-//@CrossOrigin(origins = "${origin}", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE})
+@CrossOrigin
 @RestController
 @RequestMapping("/users")
 public class UserRestController {

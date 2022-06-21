@@ -27,7 +27,7 @@ import com.comarch.ripplehotseat.service.OfficeService;
 import com.comarch.ripplehotseat.service.RoomService;
 import com.comarch.ripplehotseat.util.ObjectMapperUtils;
 
-//@CrossOrigin(origins = "${origin}", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE})
+@CrossOrigin
 @RestController
 @RequestMapping("/desks")
 public class DeskRestController {
