@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(origins = "*", methods = RequestMethod.GET)
+@CrossOrigin(origins = "${origin}", methods = RequestMethod.GET)
 public class JwtController {
 
 	@Autowired
