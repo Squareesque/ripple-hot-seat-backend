@@ -1,5 +1,7 @@
 package com.comarch.ripplehotseat.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comarch.ripplehotseat.dto.LevelDTO;
+import com.comarch.ripplehotseat.dto.PercentageDTO;
+import com.comarch.ripplehotseat.model.Desk;
 import com.comarch.ripplehotseat.model.Level;
 import com.comarch.ripplehotseat.model.Office;
+import com.comarch.ripplehotseat.model.Reservation;
+import com.comarch.ripplehotseat.model.Room;
+import com.comarch.ripplehotseat.service.DeskService;
 import com.comarch.ripplehotseat.service.LevelService;
 import com.comarch.ripplehotseat.service.OfficeService;
+import com.comarch.ripplehotseat.service.ReservationService;
+import com.comarch.ripplehotseat.service.RoomService;
 import com.comarch.ripplehotseat.util.ObjectMapperUtils;
 
 @CrossOrigin
@@ -34,6 +43,12 @@ public class LevelRestController {
 	public LevelService levelService;
 	@Autowired
 	public OfficeService officeService;
+	@Autowired
+	public RoomService roomService;
+	@Autowired
+	public DeskService deskService;
+	@Autowired
+	public ReservationService reservationService;
 	
 	@GetMapping(value="")
 	public List<LevelDTO> findAll(){
@@ -80,6 +95,32 @@ public class LevelRestController {
 	@GetMapping(value = "/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE) 
 	public @ResponseBody byte[] getImage(@PathVariable("id") String id) {
 		return ObjectMapperUtils.map(levelService.findById(id), LevelDTO.class).getPicture();
+	}
+	
+	@GetMapping(value = "/percentage/{id}")
+	public List<PercentageDTO> findPercentageById(@PathVariable("id") String id) {
+		List<PercentageDTO> list = new ArrayList<PercentageDTO>();
+		Date presentTime = new Date();
+		for(Room room : roomService.findManyByLevelId(id)) {
+			PercentageDTO element = new PercentageDTO();
+			element.setRoomId(room.getId());
+			int allDesks = 0;
+			int reservedDesks = 0;
+			for(Desk desk : deskService.findManyByRoomId(room.getId())) {
+				allDesks++;
+				for(Reservation reservation : reservationService.findManyByDeskId(desk.getId())) {
+					Date startTime = reservation.getStartTime();
+					Date endTime = reservation.getEndTime();
+					if(!((startTime.before(presentTime) && endTime.before(presentTime))||(startTime.after(presentTime) && endTime.after(presentTime)))) {
+						reservedDesks++;
+						break;
+					}
+				}
+			}
+			element.setPercentage(reservedDesks * 100 / allDesks);
+			list.add(element);
+		}
+		return list;
 	}
 	
 	@PostMapping(value = "/save")
