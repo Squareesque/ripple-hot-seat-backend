@@ -21,7 +21,7 @@ import com.comarch.ripplehotseat.model.User;
 import com.comarch.ripplehotseat.service.UserService;
 import com.comarch.ripplehotseat.util.ObjectMapperUtils;
 
-@CrossOrigin(origins = "https://ripple-hot-seat-backend-app.herokuapp.com", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/users")
 public class UserRestController {

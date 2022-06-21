@@ -21,7 +21,7 @@ import com.comarch.ripplehotseat.model.Office;
 import com.comarch.ripplehotseat.service.OfficeService;
 import com.comarch.ripplehotseat.util.ObjectMapperUtils;
 
-@CrossOrigin(origins = "https://ripple-hot-seat-backend-app.herokuapp.com", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/offices")
 public class OfficeRestController {
