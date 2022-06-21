@@ -10,11 +10,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin("https://ripple-hot-seat-backend-app.herokuapp.com")
+@CrossOrigin(origins = "https://ripple-hot-seat-backend-app.herokuapp.com", methods = RequestMethod.GET)
 public class JwtController {
 
 	@Autowired

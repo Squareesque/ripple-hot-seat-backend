@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comarch.ripplehotseat.dto.OfficeDTO;
@@ -20,7 +21,7 @@ import com.comarch.ripplehotseat.model.Office;
 import com.comarch.ripplehotseat.service.OfficeService;
 import com.comarch.ripplehotseat.util.ObjectMapperUtils;
 
-@CrossOrigin("https://ripple-hot-seat-backend-app.herokuapp.com")
+@CrossOrigin(origins = "https://ripple-hot-seat-backend-app.herokuapp.com", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/offices")
 public class OfficeRestController {
